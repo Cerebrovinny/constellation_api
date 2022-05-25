@@ -15,13 +15,7 @@ mongoose
     .catch((err) => console.log(err))
 
 //middlewares
-app.use(
-    express.urlencoded({
-        extend: true,
-    }),
-)
-
-app.use(express.json())
+app.use(express.json());
 
 //routes
 app.get('/', (req, res) => {
