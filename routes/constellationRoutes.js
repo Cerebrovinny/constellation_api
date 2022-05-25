@@ -12,18 +12,27 @@ router.post('/', async (req, res) => {
         coordinates
     };
 
-    if(!name || !abbreviation || !coordinates) {
-        res.status(422).json({ error: `name, abbreviation, coordinates are required` });
-        return;
-    }
-
     try {
-        await Constellation.create(constellation);
-
-        res.status(201).json({message: 'success inserted constellation'})
+        await Constellation.findOne({ name: name, abbreviation: abbreviation, coordinates: coordinates})
+        .then(async constellation => {
+            if(constellation){
+                    let errors = [];
+                    errors.push({msg: 'Constellation already exists'});
+                    return res.status(500).json({error: errors})
+                } else {
+                    try {
+                        await Constellation.create(constellation);
+                        
+                        res.status(201).json({message: 'Success inserted constellation'})
+                    } catch (error) {
+                        res.status(500).json({error: error})
+                    }
+                }
+            })
     } catch (error) {
         res.status(500).json({error: error})
     }
+
 });
 
 //Read
@@ -83,5 +92,26 @@ router.patch('/:id', async(req, res) => {
     }
 
 });
+
+//delete
+router.delete('/:id', async(req, res) => {
+    const id = req.params.id;
+    const constellation = await Constellation.findOne({_id: id})
+    if (!constellation) {
+        res.status(422).json({ message: 'Constellation not found' });
+        return
+    }
+
+    try {
+
+        await Constellation.deleteOne({_id: id});
+
+        res.status(200).json({message: 'Constellation removed successfuly'});
+
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
+
+})
 
 module.exports = router;

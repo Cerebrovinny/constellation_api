@@ -2,9 +2,9 @@
 const mongoose = require('mongoose');
 
 const Constellation = mongoose.model('Constellation', {
-    name: String,
-    abbreviation: String,
-    coordinates: String,
+    name: { type: String, required: true, unique: true },
+    abbreviation: { type: String, required: true, unique: true },
+    coordinates: { type: String, required: true, unique: true },
 });
 
 module.exports = Constellation;
