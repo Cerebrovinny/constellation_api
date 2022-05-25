@@ -23,6 +23,17 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({error: error})
     }
+});
+
+//Read
+router.get('/', async (req, res) => {
+    try {
+        const constellations = await Constellation.find();
+        
+        res.status(200).json(constellations);
+    } catch (error) {
+        res.status(500).json({ error: error })
+    }
 })
 
 module.exports = router;
