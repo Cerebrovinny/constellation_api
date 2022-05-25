@@ -3,8 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-const Constellation = require('./models/Constellation');
-
 mongoose
     .connect(
         `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@constellationdb.vvc62.mongodb.net/?retryWrites=true&w=majority`
