@@ -6,14 +6,14 @@ router.post('/', async (req, res) => {
 
     const {name, abbreviation, coordinates} = req.body;
 
-    const constellation = {
+    const constellationObj = {
         name,
         abbreviation,
         coordinates
     };
 
     try {
-        await Constellation.findOne({ name: name, abbreviation: abbreviation, coordinates: coordinates})
+        await Constellation.findOne(constellationObj)
         .then(async constellation => {
             if(constellation){
                     let errors = [];
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
                     return res.status(500).json({error: errors})
                 } else {
                     try {
-                        await Constellation.create(constellation);
+                        await Constellation.create(constellationObj);
                         
                         res.status(201).json({message: 'Success inserted constellation'})
                     } catch (error) {
