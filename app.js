@@ -30,25 +30,6 @@ app.get('/', (req, res) => {
     res.json({ success: true })
 });
 
-app.post('/constellation', async (req, res) => {
+const constellationRoutes = require('./routes/constellationRoutes')
 
-    const {name, abbreviation, coordinates} = req.body;
-
-    const constellation = {
-        name,
-        abbreviation,
-        coordinates
-    };
-
-    if(!name || !abbreviation || !coordinates) {
-        res.status(422).json({ error: `name, abbreviation, coordinates are required` });
-    }
-
-    try {
-        await Constellation.create(constellation);
-
-        res.status(201).json({message: 'success inserted constellation'})
-    } catch (error) {
-        res.status(500).json({error: error})
-    }
-})
+app.use('/constellation', constellationRoutes)
